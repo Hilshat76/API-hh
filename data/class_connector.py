@@ -38,3 +38,22 @@ class SaveJson(WorkingWithAFile):
     def del_vacancies(self):
         pass
 
+
+class SaveTxt(WorkingWithAFile):
+    """
+    Класс для сохранения, получения и удаления вакансий из .txt файла
+    """
+
+    def __init__(self, file_name):
+        self.file_name = file_name
+
+    def add_vacancy(self, vacancy_data):
+        with open(self.file_name, 'a') as file:
+            file.write(str(vacancy_data) + '\n')
+
+    def get_vacancies(self):
+        with open(self.file_name, 'r') as file:
+            return file.readlines()
+
+    def del_vacancies(self):
+        pass
