@@ -1,5 +1,4 @@
 import requests
-import json
 from abc import ABC, abstractmethod
 
 
@@ -29,14 +28,3 @@ class HeadHunterRuAPI(APIVacanciesHH):
         response = requests.get(url, params=params)
         data = response.json()
         return data
-
-    @staticmethod
-    def saving_json(data, filename):
-        """
-           Сохраняет данные в формате JSON в файл.
-
-           :param data: Данные в формате JSON, которые нужно сохранить.
-           :param filename: Имя файла, в который нужно сохранить данные.
-           """
-        with open(filename, 'w') as file:
-            json.dump(data, file)
