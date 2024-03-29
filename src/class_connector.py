@@ -41,7 +41,7 @@ class SaveJson(WorkingWithAFile):
 
 class SaveTxt(WorkingWithAFile):
     """
-    Класс для сохранения, получения и удаления вакансий из .txt файла
+    Класс для сохранения, получения и удаления вакансий из .txt-файла
     """
 
     def __init__(self, file_name):

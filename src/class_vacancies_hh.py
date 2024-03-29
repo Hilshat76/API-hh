@@ -53,3 +53,7 @@ class VacanciesHH:
                 Требования: {self.requirements}
                 Ссылка на вакансию: {self.link}
                 """)
+
+    @staticmethod
+    def filter_by_city(vacancies, city_name):
+        return [vacancy for vacancy in vacancies if vacancy.city == city_name]
