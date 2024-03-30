@@ -4,6 +4,13 @@ from src.class_vacancies_hh import VacanciesHH
 
 
 def get_value(dictionary, *keys):
+    """
+    Возвращает значение из словаря по заданному пути ключей.
+    :param dictionary: словарь, из которого мы получаем значение
+    :param keys: переменное количество ключей в виде строки, определяющих путь к значению.
+    :return: Значение из словаря, связанное с заданным путем ключей.
+     Если хотя бы один ключ не существует или путь прерывается значениями None, будет возвращено None.
+    """
     for key in keys:
         if dictionary is None:
             return None
@@ -22,15 +29,19 @@ def user_interaction():
 
         vacancy_hh = HeadHunterRuAPI()
         all_vacancy = vacancy_hh.getting_vacancies(name_vacancy)
+
+        # Фильтрация вакансий по валюте RUR
+        all_vacancy = [vacancy for vacancy in all_vacancy.get('items') if get_value(vacancy, 'salary', 'currency') == 'RUR']
+
         good_vacancy = []
 
-        print(f"Всего количество вакансий по запросу '{name_vacancy}': {len(all_vacancy['items'])}")
-        print(f"Топ {min(top_n, len(all_vacancy['items']))} вакансий по зарплате:")
+        print(f"Всего количество вакансий по запросу '{name_vacancy}': {len(all_vacancy)}")
+        print(f"Топ {min(top_n, len(all_vacancy))} вакансий по зарплате:")
 
         # использование {} для создания пустого словаря вместе с методом get() обеспечивает
         # безопасный доступ к значениям словаря и предотвращает возможные ошибки
         # при отсутствии ключей или пустых значений в словаре.
-        for vacancy in all_vacancy.get('items'):
+        for vacancy in all_vacancy:
             name = get_value(vacancy, 'name')
             area = get_value(vacancy, 'area', 'name')
             salary_from = get_value(vacancy, 'salary', 'from')
