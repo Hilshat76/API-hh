@@ -1,6 +1,7 @@
 from src.class_api import HeadHunterRuAPI
 from src.class_connector import SaveJson
 from src.class_vacancies_hh import VacanciesHH
+import json
 
 
 def get_value(dictionary, *keys):
@@ -88,6 +89,9 @@ def user_interaction():
 
         for vacancy in good_vacancy:
             print(vacancy)
+
+    with open('/Users/andalou/PycharmProjects/API-hh/data/vacancies.json', 'w') as file:
+        json.dump(good_vacancy, file, default=lambda x: x.__dict__)  # записывает в файл vacancies.json выбранные пользователем вакансии
 
 
 if __name__ == "__main__":
