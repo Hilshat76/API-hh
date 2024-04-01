@@ -55,5 +55,12 @@ class VacanciesHH:
                 """)
 
     @staticmethod
-    def filter_by_city(vacancies, city_name):
-        return [vacancy for vacancy in vacancies if vacancy.city == city_name]
+    def convert_to_dict(obj):
+        """
+        Сериализирует объект класса VacanciesHH в формат JSON.
+        :param obj: объект класса VacanciesHH
+        :return: словарь с атрибутами объекта
+        """
+        if isinstance(obj, VacanciesHH):
+            return obj.__dict__
+        return obj
