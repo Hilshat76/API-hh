@@ -1,6 +1,8 @@
 from abc import ABC, abstractmethod
 import json
 
+from src.class_vacancies_hh import VacanciesHH
+
 
 class WorkingWithAFile(ABC):
 
@@ -27,7 +29,7 @@ class SaveJson(WorkingWithAFile):
 
     def add_vacancy(self, vacancy_data):
         with open(self.file_name, 'a') as file:
-            json.dump(vacancy_data, file)
+            json.dump(vacancy_data, file, default=VacanciesHH.convert_to_dict)
             file.write('\n')
 
     def get_vacancies(self):
