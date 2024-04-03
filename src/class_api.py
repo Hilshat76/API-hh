@@ -16,6 +16,9 @@ class HeadHunterRuAPI(APIVacanciesHH):
     """
     Подключается к API и получает вакансии по ключевому слову
     """
+    def __init__(self, per_page=20):
+        self._url = 'https://api.hh.ru/vacancies'
+        self._per_page = per_page
 
     def getting_vacancies(self, keyword):
         """
@@ -23,8 +26,7 @@ class HeadHunterRuAPI(APIVacanciesHH):
         :param keyword: Ключевое слово для поиска вакансий
         :return: JSON-данные с информацией о вакансиях
         """
-        url = 'https://api.hh.ru/vacancies'
-        params = {'text': keyword}
-        response = requests.get(url, params=params)
+        params = {'text': keyword, 'per_page': self._per_page}
+        response = requests.get(self._url, params=params)
         data = response.json()
         return data
