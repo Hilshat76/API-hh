@@ -1,9 +1,10 @@
+from typing import Optional, List
 from src.class_api import HeadHunterRuAPI
 from src.class_connector import SaveJson
 from src.class_vacancies_hh import VacanciesHH
 
 
-def get_value(dictionary, *keys):
+def get_value(dictionary: dict, *keys: str) -> Optional[dict]:
     """
     Возвращает значение из словаря по заданному пути ключей
     :param dictionary: словарь, из которого мы получаем значение
@@ -18,7 +19,7 @@ def get_value(dictionary, *keys):
     return dictionary
 
 
-def user_interaction():
+def user_interaction() -> None:
     print('''Привет! С помощью этого приложения поиск вакансий на Hh.ru станет намного проще.
           Вот несколько рекомендаций для комфортного взаимодействия с программой:
           Количество вакансий указывать только цифрами, иначе будут выданы все найденные по имени вакансии
@@ -28,8 +29,8 @@ def user_interaction():
           Если не будет найдено ни одного совпадения по ключевым словам,
           то программа выдаст количество вакансий, указанных в следующем вводе
           ----''')
-    name_vacancy = input('Введите название вакансии: ')
-    keyword_vacancy = input('Введите ключевые слова для фильтрации вакансий: ').split()
+    name_vacancy: str = input('Введите название вакансии: ')
+    keyword_vacancy: List[str] = input('Введите ключевые слова для фильтрации вакансий: ').split()
 
     try:
         top_n = int(input('Введите количество вакансий для отображения по убыванию зарплаты: '))
@@ -42,7 +43,7 @@ def user_interaction():
     vacancy_hh = HeadHunterRuAPI()
     all_vacancy = vacancy_hh.getting_vacancies(name_vacancy)
 
-    # Фильтрация вакансий по валюте RUR (т.к ищем в России)
+    # Фильтрация вакансий по валюте RUR (т.к. ищем в России)
     all_vacancy = [vacancy for vacancy in all_vacancy.get('items') if get_value(vacancy, 'salary', 'currency') == 'RUR']
 
     if len(all_vacancy) == 0:
@@ -51,19 +52,19 @@ def user_interaction():
         print(f"Всего количество вакансий по запросу '{name_vacancy}': {len(all_vacancy)}")
         print(f"Топ {top_n or len(all_vacancy)} вакансий по зарплате:")
 
-        good_vacancy = []
+        good_vacancy: List[VacanciesHH] = []
 
         if not keyword_vacancy:
-            top_n_vacancy = top_n or len(all_vacancy)
+            top_n_vacancy: int = top_n or len(all_vacancy)
             for vacancy in all_vacancy[:top_n_vacancy]:
                 try:
-                    name = get_value(vacancy, 'name')
-                    area = get_value(vacancy, 'area', 'name')
-                    salary_from = get_value(vacancy, 'salary', 'from')
-                    salary_to = get_value(vacancy, 'salary', 'to')
-                    salary_currency = get_value(vacancy, 'salary', 'currency')
-                    requirement = get_value(vacancy, 'snippet', 'requirement')
-                    alternate_url = get_value(vacancy, 'alternate_url')
+                    name: str = get_value(vacancy, 'name') or ''
+                    area: str = get_value(vacancy, 'area', 'name') or ''
+                    salary_from: Optional[int] = get_value(vacancy, 'salary', 'from')
+                    salary_to: Optional[int] = get_value(vacancy, 'salary', 'to')
+                    salary_currency: str = get_value(vacancy, 'salary', 'currency') or ''
+                    requirement: str = get_value(vacancy, 'snippet', 'requirement') or ''
+                    alternate_url: str = get_value(vacancy, 'alternate_url') or ''
                     good_vacancy.append(
                         VacanciesHH(name, area, salary_from, salary_to, salary_currency, requirement, alternate_url))
                 except Exception as e:
@@ -71,13 +72,13 @@ def user_interaction():
         else:
             for vacancy in all_vacancy:
                 try:
-                    name = get_value(vacancy, 'name')
-                    area = get_value(vacancy, 'area', 'name')
-                    salary_from = get_value(vacancy, 'salary', 'from')
-                    salary_to = get_value(vacancy, 'salary', 'to')
-                    salary_currency = get_value(vacancy, 'salary', 'currency')
-                    requirement = get_value(vacancy, 'snippet', 'requirement')
-                    alternate_url = get_value(vacancy, 'alternate_url')
+                    name: str = get_value(vacancy, 'name') or ''
+                    area: str = get_value(vacancy, 'area', 'name') or ''
+                    salary_from: Optional[int] = get_value(vacancy, 'salary', 'from')
+                    salary_to: Optional[int] = get_value(vacancy, 'salary', 'to')
+                    salary_currency: str = get_value(vacancy, 'salary', 'currency') or ''
+                    requirement: str = get_value(vacancy, 'snippet', 'requirement') or ''
+                    alternate_url: str = get_value(vacancy, 'alternate_url') or ''
                     if any(keyword.lower() in str(vacancy).lower() for keyword in keyword_vacancy):
                         good_vacancy.append(
                             VacanciesHH(name, area, salary_from, salary_to, salary_currency, requirement,
